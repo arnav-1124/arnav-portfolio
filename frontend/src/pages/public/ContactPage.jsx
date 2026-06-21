@@ -69,6 +69,26 @@ function ContactPage() {
     }
   };
 
+  const handleSendEmail = () => {
+    const to = contactInfo.email;
+
+    const subject = encodeURIComponent(
+      `Portfolio contact from ${formData.name || "Visitor"}`,
+    );
+
+    const body = encodeURIComponent(
+      `Name: ${formData.name || ""}\nEmail: ${formData.email || ""}\n\nMessage:\n${
+        formData.message || ""
+      }`,
+    );
+
+    const gmailComposeUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(
+      to,
+    )}&su=${subject}&body=${body}`;
+
+    window.open(gmailComposeUrl, "_blank", "noopener,noreferrer");
+  };
+
   return (
     <PageShell>
       <main className="contact-page">
@@ -172,10 +192,21 @@ function ContactPage() {
               />
             </label>
 
-            <button type="submit" disabled={isSubmitting}>
-              <Send size={16} />
-              <span>{isSubmitting ? "Sending..." : "Send message"}</span>
-            </button>
+            <div className="contact-form__actions">
+              <button type="submit" disabled={isSubmitting}>
+                <Send size={16} />
+                <span>{isSubmitting ? "Sending..." : "Send message"}</span>
+              </button>
+
+              <button
+                type="button"
+                className="contact-form__email-button"
+                onClick={handleSendEmail}
+              >
+                <Mail size={16} />
+                <span>Send email</span>
+              </button>
+            </div>
 
             {formStatus.message ? (
               <p

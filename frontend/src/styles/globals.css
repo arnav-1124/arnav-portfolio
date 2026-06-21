@@ -3004,6 +3004,24 @@ button {
   width: fit-content;
 }
 
+.contact-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.contact-form__email-button {
+  border-color: rgba(143, 214, 148, 0.34) !important;
+  color: var(--accent-green) !important;
+  background: var(--accent-green-soft) !important;
+}
+
+.contact-form__email-button:hover {
+  color: #071407 !important;
+  background: var(--accent-green) !important;
+  border-color: var(--accent-green) !important;
+}
+
 /* Responsive */
 
 @media (max-width: 980px) {
@@ -3342,6 +3360,13 @@ button {
   .contact-link-card__action a,
   .contact-link-card__action button,
   .contact-form button {
+    width: 100%;
+  }
+  .contact-form__actions {
+    display: grid;
+  }
+
+  .contact-form__actions button {
     width: 100%;
   }
 }

@@ -25,4 +25,5 @@ export const contactInfo = {
     "Reach out for professional opportunities, collaborations, feedback, finance-tech ideas, or questions about my projects and journey.",
   availability: "Open to internships, collaborations, and project discussions",
   responseNote: "Usually replies when available.",
+  email: "your-email@gmail.com",
 };
