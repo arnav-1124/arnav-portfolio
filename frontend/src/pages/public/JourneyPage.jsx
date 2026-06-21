@@ -39,20 +39,22 @@ function JourneyPage() {
           className="journey-controls container"
           aria-label="Journey filters"
         >
-          {journeyFilters.map((filter) => (
-            <button
-              key={filter}
-              type="button"
-              className={
-                activeFilter === filter
-                  ? "journey-filter is-active"
-                  : "journey-filter"
-              }
-              onClick={() => setActiveFilter(filter)}
-            >
-              {filter}
-            </button>
-          ))}
+          <div className="filter-chip-group">
+            {journeyFilters.map((filter) => (
+              <button
+                key={filter}
+                type="button"
+                className={
+                  activeFilter === filter
+                    ? "filter-chip is-active"
+                    : "filter-chip"
+                }
+                onClick={() => setActiveFilter(filter)}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
         </section>
 
         <section
