@@ -62,15 +62,11 @@ function ResumePage() {
             </div>
 
             <div className="resume-preview-frame">
-              <div className="resume-preview-frame__placeholder">
-                <span>PDF</span>
-                <strong>Resume preview area</strong>
-                <p>
-                  Add your resume at{" "}
-                  <code>/public/resume/arnav-gupta-resume.pdf</code> to enable
-                  the actual preview and download.
-                </p>
-              </div>
+              <iframe
+                className="resume-preview-frame__pdf"
+                src={profile.resumeUrl}
+                title="Arnav Gupta Resume"
+              />
             </div>
           </article>
 
@@ -105,7 +101,9 @@ function ResumePage() {
 
                 <div className="proof-link-card__actions">
                   {group.link ? (
-                    <a href={group.link} target="_blank">View proof</a>
+                    <a href={group.link} target="_blank">
+                      View proof
+                    </a>
                   ) : (
                     <button type="button" disabled>
                       Link soon
@@ -124,7 +122,9 @@ function ResumePage() {
 
               <div className="proof-link-card__actions">
                 {profile.linkedin ? (
-                  <a href={profile.linkedin} target="_blank">Open LinkedIn</a>
+                  <a href={profile.linkedin} target="_blank">
+                    Open LinkedIn
+                  </a>
                 ) : (
                   <button type="button" disabled>
                     Link soon
@@ -143,7 +143,9 @@ function ResumePage() {
 
               <div className="proof-link-card__actions">
                 {profile.github ? (
-                  <a href={profile.github} target="_blank">Open GitHub</a>
+                  <a href={profile.github} target="_blank">
+                    Open GitHub
+                  </a>
                 ) : (
                   <button type="button" disabled>
                     Link soon
