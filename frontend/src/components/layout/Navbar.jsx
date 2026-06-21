@@ -16,14 +16,14 @@ function Navbar() {
         top: 0,
         zIndex: 20,
         borderBottom: "1px solid var(--border-soft)",
-        background: "rgba(16, 14, 24, 0.9)",
+        background: "rgba(23, 23, 23, 0.88)",
         backdropFilter: "blur(18px)",
       }}
     >
       <nav
         className="container"
         style={{
-          height: "60px",
+          height: "58px",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
