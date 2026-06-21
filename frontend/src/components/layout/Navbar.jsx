@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const links = [
@@ -9,47 +10,20 @@ const links = [
 ];
 
 function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
-    <header
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 20,
-        borderBottom: "1px solid var(--border-soft)",
-        background: "rgba(23, 23, 23, 0.88)",
-        backdropFilter: "blur(18px)",
-      }}
-    >
-      <nav
-        className="container"
-        style={{
-          height: "58px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: "24px",
-        }}
-      >
-        <NavLink
-          to="/"
-          style={{
-            fontWeight: 700,
-            letterSpacing: "-0.04em",
-            fontSize: "20px",
-          }}
-        >
-          Arnav<span style={{ color: "var(--accent)" }}>.</span>
+    <header className="site-header">
+      <nav className="site-nav container">
+        <NavLink to="/" className="site-logo" onClick={closeMenu}>
+          Arnav<span>.</span>
         </NavLink>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "26px",
-            color: "var(--text-muted)",
-            fontSize: "14px",
-          }}
-        >
+        <div className="site-nav__links">
           {links.map((link) => (
             <NavLink
               key={link.href}
@@ -62,7 +36,35 @@ function Navbar() {
             </NavLink>
           ))}
         </div>
+
+        <button
+          className={`site-nav__toggle ${isMenuOpen ? "is-open" : ""}`}
+          type="button"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isMenuOpen}
+          onClick={() => setIsMenuOpen((prev) => !prev)}
+        >
+          <span />
+          <span />
+        </button>
       </nav>
+
+      <div className={`mobile-menu ${isMenuOpen ? "is-open" : ""}`}>
+        <div className="mobile-menu__inner container">
+          {links.map((link) => (
+            <NavLink
+              key={link.href}
+              to={link.href}
+              onClick={closeMenu}
+              className={({ isActive }) =>
+                isActive ? "mobile-menu__link is-active" : "mobile-menu__link"
+              }
+            >
+              {link.label}
+            </NavLink>
+          ))}
+        </div>
+      </div>
     </header>
   );
 }
