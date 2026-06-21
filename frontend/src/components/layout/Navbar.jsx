@@ -45,7 +45,7 @@ function Navbar() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: "22px",
+            gap: "26px",
             color: "var(--text-muted)",
             fontSize: "14px",
           }}
@@ -54,10 +54,9 @@ function Navbar() {
             <NavLink
               key={link.href}
               to={link.href}
-              style={({ isActive }) => ({
-                color: isActive ? "var(--text-main)" : "var(--text-muted)",
-                transition: "color var(--transition-fast)",
-              })}
+              className={({ isActive }) =>
+                isActive ? "nav-link nav-link--active" : "nav-link"
+              }
             >
               {link.label}
             </NavLink>
