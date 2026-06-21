@@ -1,5 +1,5 @@
 export const profile = {
-  name: "Arnav Gupta",
+  name: "Arnav Raj",
   role: "CA Articleship Trainee × Full Stack Developer",
   location: "India",
   currentStatus: "CA Articleship ongoing",

@@ -17,7 +17,7 @@ function Footer() {
           fontSize: "14px",
         }}
       >
-        <span>© {new Date().getFullYear()} Arnav Gupta</span>
+        <span>© {new Date().getFullYear()} Arnav Raj</span>
         <span>Created with care by Arnav.</span>
       </div>
     </footer>

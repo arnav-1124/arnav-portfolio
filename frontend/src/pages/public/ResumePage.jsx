@@ -53,7 +53,7 @@ function ResumePage() {
             <div className="resume-preview-card__top">
               <div>
                 <span>Resume preview</span>
-                <h2>Arnav Gupta — Resume</h2>
+                <h2>Arnav Raj — Resume</h2>
               </div>
 
               <a href={profile.resumeUrl} target="_blank">
@@ -65,7 +65,7 @@ function ResumePage() {
               <iframe
                 className="resume-preview-frame__pdf"
                 src={profile.resumeUrl}
-                title="Arnav Gupta Resume"
+                title="Arnav Raj Resume"
               />
             </div>
           </article>

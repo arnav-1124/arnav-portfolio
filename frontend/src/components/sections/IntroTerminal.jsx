@@ -4,7 +4,7 @@ const terminalLines = [
   {
     command: "whoami",
     response:
-      "Arnav Gupta — CA student, articleship trainee, and full-stack developer.",
+      "Arnav Raj — CA student, articleship trainee, and full-stack developer.",
   },
   {
     command: "current_focus",
