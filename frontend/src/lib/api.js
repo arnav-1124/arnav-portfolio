@@ -27,10 +27,22 @@ const request = async (path, options = {}) => {
     },
   });
 
-  const payload = await response.json();
+  let payload = null;
+
+  try {
+    payload = await response.json();
+  } catch {
+    payload = null;
+  }
 
   if (!response.ok) {
-    throw new Error(payload.message || "Something went wrong");
+    console.error("API request failed:", {
+      path,
+      status: response.status,
+      payload,
+    });
+
+    throw new Error(payload?.message || "Something went wrong");
   }
 
   return payload.data;

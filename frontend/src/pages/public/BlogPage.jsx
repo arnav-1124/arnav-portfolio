@@ -1,4 +1,4 @@
-import { Heart, MessageCircle, Send, Share2 } from "lucide-react";
+import { ExternalLink, Heart, MessageCircle, Send, Share2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import PageShell from "../../components/layout/PageShell.jsx";
@@ -17,6 +17,8 @@ function BlogPage() {
   const [commentDrafts, setCommentDrafts] = useState({});
   const [shareMessage, setShareMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState({});
+
+  const [expandedPosts, setExpandedPosts] = useState({});
 
   const filteredPosts = useMemo(() => {
     if (activeCategory === "All") return blogPosts;
@@ -125,6 +127,13 @@ function BlogPage() {
     }
   };
 
+  const toggleExpandedPost = (postId) => {
+    setExpandedPosts((prev) => ({
+      ...prev,
+      [postId]: !prev[postId],
+    }));
+  };
+
   return (
     <PageShell>
       <main className="blog-page">
@@ -184,6 +193,19 @@ function BlogPage() {
 
             return (
               <article className="feed-post" id={post.slug} key={post.id}>
+                {post.liveUrl ? (
+                  <a
+                    href={post.liveUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="feed-post__live-link"
+                    aria-label={`Open live link for ${post.title}`}
+                  >
+                    <ExternalLink size={15} />
+                    <span>Live</span>
+                  </a>
+                ) : null}
+                
                 <header className="feed-post__author">
                   <div className="feed-post__avatar">AR</div>
 
@@ -208,16 +230,31 @@ function BlogPage() {
                   </div>
 
                   <div className="feed-post__body">
-                    {post.content.map((paragraph) => (
+                    {(expandedPosts[post.id]
+                      ? post.content
+                      : post.content.slice(0, 1)
+                    ).map((paragraph) => (
                       <p key={paragraph}>{paragraph}</p>
                     ))}
+
+                    {post.content.length > 1 ? (
+                      <button
+                        type="button"
+                        className="feed-post__read-more"
+                        onClick={() => toggleExpandedPost(post.id)}
+                      >
+                        {expandedPosts[post.id] ? "Show less" : "Show more..."}
+                      </button>
+                    ) : null}
                   </div>
 
-                  <div className="feed-post__metrics">
-                    {post.metrics.map((metric) => (
-                      <span key={metric}>{metric}</span>
-                    ))}
-                  </div>
+                  {expandedPosts[post.id] ? (
+                    <div className="feed-post__metrics">
+                      {post.metrics.map((metric) => (
+                        <span key={metric}>{metric}</span>
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
 
                 <div className="feed-post__media">

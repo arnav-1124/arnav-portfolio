@@ -9,6 +9,7 @@ export const blogPosts = [
     date: "2026",
     readTime: "4 min read",
     imageUrl: "",
+    liveUrl: "",
     excerpt:
       "A real-world finance reporting project where a messy monthly MIS process was converted into a refresh-based Excel system using Xero exports, Power Query, pivot logic, slicers, and dashboarding.",
     tags: ["MIS", "Excel", "Xero", "Dashboard", "Finance"],
@@ -34,6 +35,7 @@ export const blogPosts = [
     date: "2026",
     readTime: "4 min read",
     imageUrl: "https://res.cloudinary.com/dw5lnosfi/image/upload/v1782044857/Screenshot_2026-06-21_175714_fkwdmb.png",
+    liveUrl: "https://finfile-tools-frontend.vercel.app/",
     excerpt:
       "FinFile Tools is my attempt to build a finance-focused document utility SaaS for accountants, finance teams, and professionals who work with PDFs, Excel files, scanned documents, and reconciliation workflows.",
     tags: ["SaaS", "FinFile Tools", "OCR", "Documents", "React"],
