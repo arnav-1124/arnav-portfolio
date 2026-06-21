@@ -34,7 +34,8 @@ export const blogPosts = [
     category: "Development",
     date: "2026",
     readTime: "4 min read",
-    imageUrl: "https://res.cloudinary.com/dw5lnosfi/image/upload/v1782044857/Screenshot_2026-06-21_175714_fkwdmb.png",
+    imageUrl:
+      "https://res.cloudinary.com/dw5lnosfi/image/upload/v1782044857/Screenshot_2026-06-21_175714_fkwdmb.png",
     liveUrl: "https://finfile-tools-frontend.vercel.app/",
     excerpt:
       "FinFile Tools is my attempt to build a finance-focused document utility SaaS for accountants, finance teams, and professionals who work with PDFs, Excel files, scanned documents, and reconciliation workflows.",
@@ -52,5 +53,19 @@ export const blogPosts = [
       "OCR and document parsing",
       "React + Node + document engine",
     ],
+  },
+  {
+    id: "unique-post-id",
+    slug: "unique-post-slug",
+    title: "Your blog title",
+    category: "Finance", // Finance / Development / Product
+    date: "2026",
+    readTime: "3 min read",
+    imageUrl: "cloudinary-image-url-here",
+    liveUrl: "optional-live-link-here",
+    excerpt: "Short LinkedIn-style summary shown before the full content.",
+    tags: ["Excel", "MIS", "Dashboard"],
+    content: ["Paragraph one.", "Paragraph two.", "Paragraph three."],
+    metrics: ["Important point 1", "Important point 2", "Important point 3"],
   },
 ];
