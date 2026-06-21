@@ -12,9 +12,20 @@ import blogRoutes from "./modules/blog/blog.routes.js";
 
 const app = express();
 
+const allowedOrigins = env.clientOrigin
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 app.use(
   cors({
-    origin: env.clientOrigin,
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`CORS blocked origin: ${origin}`));
+    },
     credentials: true,
   }),
 );
@@ -24,7 +35,6 @@ app.use(morgan(env.nodeEnv === "development" ? "dev" : "combined"));
 app.use(express.json({ limit: "2mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
 
 app.use("/api/blog", blogRoutes);
 app.get("/api/health", (req, res) => {
