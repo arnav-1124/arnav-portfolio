@@ -105,7 +105,7 @@ function ResumePage() {
 
                 <div className="proof-link-card__actions">
                   {group.link ? (
-                    <a href={group.link}>View proof</a>
+                    <a href={group.link} target="_blank">View proof</a>
                   ) : (
                     <button type="button" disabled>
                       Link soon
@@ -124,7 +124,7 @@ function ResumePage() {
 
               <div className="proof-link-card__actions">
                 {profile.linkedin ? (
-                  <a href={profile.linkedin}>Open LinkedIn</a>
+                  <a href={profile.linkedin} target="_blank">Open LinkedIn</a>
                 ) : (
                   <button type="button" disabled>
                     Link soon
@@ -143,7 +143,7 @@ function ResumePage() {
 
               <div className="proof-link-card__actions">
                 {profile.github ? (
-                  <a href={profile.github}>Open GitHub</a>
+                  <a href={profile.github} target="_blank">Open GitHub</a>
                 ) : (
                   <button type="button" disabled>
                     Link soon
