@@ -9,6 +9,7 @@ import { notFoundMiddleware } from "./middlewares/notFound.middleware.js";
 import { errorMiddleware } from "./middlewares/error.middleware.js";
 
 import blogRoutes from "./modules/blog/blog.routes.js";
+import contactRoutes from "./modules/contact/contact.routes.js";
 
 const app = express();
 
@@ -37,6 +38,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use("/api/blog", blogRoutes);
+app.use("/api/contact", contactRoutes);
+
 app.get("/api/health", (req, res) => {
   res.status(200).json({
     success: true,

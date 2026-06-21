@@ -73,3 +73,14 @@ export const addBlogComment = ({ slug, displayName, commentText }) => {
     }),
   });
 };
+
+export const sendContactMessage = ({ name, email, message }) => {
+  return request("/contact", {
+    method: "POST",
+    body: JSON.stringify({
+      name,
+      email,
+      message,
+    }),
+  });
+};
