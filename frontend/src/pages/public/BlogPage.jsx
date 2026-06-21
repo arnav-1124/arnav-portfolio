@@ -1,13 +1,22 @@
-import { useMemo, useState } from "react";
+import { Heart, MessageCircle, Send, Share2 } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 
 import PageShell from "../../components/layout/PageShell.jsx";
 import { blogCategories, blogPosts } from "../../content/blog.content.js";
+import {
+  addBlogComment,
+  getBlogSocial,
+  likeBlogPost,
+  unlikeBlogPost,
+} from "../../lib/api.js";
 
 function BlogPage() {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [likedPosts, setLikedPosts] = useState({});
+  const [socialBySlug, setSocialBySlug] = useState({});
   const [openCommentPost, setOpenCommentPost] = useState(null);
+  const [commentDrafts, setCommentDrafts] = useState({});
   const [shareMessage, setShareMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState({});
 
   const filteredPosts = useMemo(() => {
     if (activeCategory === "All") return blogPosts;
@@ -15,11 +24,84 @@ function BlogPage() {
     return blogPosts.filter((post) => post.category === activeCategory);
   }, [activeCategory]);
 
-  const handleLike = (postId) => {
-    setLikedPosts((prev) => ({
-      ...prev,
-      [postId]: !prev[postId],
-    }));
+  useEffect(() => {
+    let isMounted = true;
+
+    const loadSocialData = async () => {
+      const results = await Promise.allSettled(
+        blogPosts.map(async (post) => {
+          const data = await getBlogSocial(post.slug);
+          return [post.slug, data];
+        }),
+      );
+
+      if (!isMounted) return;
+
+      const nextSocial = {};
+
+      results.forEach((result) => {
+        if (result.status === "fulfilled") {
+          const [slug, data] = result.value;
+          nextSocial[slug] = data;
+        }
+      });
+
+      setSocialBySlug(nextSocial);
+    };
+
+    loadSocialData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleLike = async (post) => {
+    const currentSocial = socialBySlug[post.slug];
+    const isLiked = currentSocial?.likedByViewer;
+
+    setIsSubmitting((prev) => ({ ...prev, [post.slug]: true }));
+
+    try {
+      const data = isLiked
+        ? await unlikeBlogPost(post.slug)
+        : await likeBlogPost(post.slug);
+
+      setSocialBySlug((prev) => ({
+        ...prev,
+        [post.slug]: data,
+      }));
+    } finally {
+      setIsSubmitting((prev) => ({ ...prev, [post.slug]: false }));
+    }
+  };
+
+  const handleCommentSubmit = async (post) => {
+    const draft = commentDrafts[post.slug]?.trim();
+
+    if (!draft) return;
+
+    setIsSubmitting((prev) => ({ ...prev, [`comment-${post.slug}`]: true }));
+
+    try {
+      const data = await addBlogComment({
+        slug: post.slug,
+        displayName: "Visitor",
+        commentText: draft,
+      });
+
+      setSocialBySlug((prev) => ({
+        ...prev,
+        [post.slug]: data,
+      }));
+
+      setCommentDrafts((prev) => ({
+        ...prev,
+        [post.slug]: "",
+      }));
+    } finally {
+      setIsSubmitting((prev) => ({ ...prev, [`comment-${post.slug}`]: false }));
+    }
   };
 
   const handleShare = async (post) => {
@@ -92,44 +174,78 @@ function BlogPage() {
           <div className="blog-share-toast container">{shareMessage}</div>
         ) : null}
 
-        <section className="blog-list container" aria-label="Build notes list">
-          {filteredPosts.map((post) => (
-            <article className="blog-card" id={post.slug} key={post.id}>
-              <div className="blog-card__content">
-                <div className="blog-card__meta">
-                  <span>{post.category}</span>
-                  <span>{post.date}</span>
-                  <span>{post.readTime}</span>
+        <section className="blog-feed container" aria-label="Build notes feed">
+          {filteredPosts.map((post) => {
+            const social = socialBySlug[post.slug] || {
+              likeCount: 0,
+              likedByViewer: false,
+              comments: [],
+            };
+
+            return (
+              <article className="feed-post" id={post.slug} key={post.id}>
+                <header className="feed-post__author">
+                  <div className="feed-post__avatar">AR</div>
+
+                  <div>
+                    <strong>Arnav Raj</strong>
+                    <p>CA Articleship Trainee × Full Stack Developer</p>
+                    <span>
+                      {post.date} • {post.category} • {post.readTime}
+                    </span>
+                  </div>
+                </header>
+
+                <div className="feed-post__content">
+                  <h2>{post.title}</h2>
+
+                  <p className="feed-post__excerpt">{post.excerpt}</p>
+
+                  <div className="feed-post__tags">
+                    {post.tags.map((tag) => (
+                      <span key={tag}>{tag}</span>
+                    ))}
+                  </div>
+
+                  <div className="feed-post__body">
+                    {post.content.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
+                  </div>
+
+                  <div className="feed-post__metrics">
+                    {post.metrics.map((metric) => (
+                      <span key={metric}>{metric}</span>
+                    ))}
+                  </div>
                 </div>
 
-                <h2>{post.title}</h2>
-                <p className="blog-card__excerpt">{post.excerpt}</p>
-
-                <div className="blog-card__tags">
-                  {post.tags.map((tag) => (
-                    <span key={tag}>{tag}</span>
-                  ))}
+                <div className="feed-post__media">
+                  {post.imageUrl ? (
+                    <img src={post.imageUrl} alt={post.title} />
+                  ) : (
+                    <div className="feed-post__placeholder">
+                      <span>{post.category}</span>
+                      <strong>Image / screenshot soon</strong>
+                      <p>Paste Cloudinary URL later in blog.content.js.</p>
+                    </div>
+                  )}
                 </div>
 
-                <div className="blog-card__body">
-                  {post.content.map((paragraph) => (
-                    <p key={paragraph}>{paragraph}</p>
-                  ))}
+                <div className="feed-post__stats">
+                  <span>{social.likeCount} likes</span>
+                  <span>{social.comments.length} comments</span>
                 </div>
 
-                <div className="blog-card__metrics">
-                  {post.metrics.map((metric) => (
-                    <span key={metric}>{metric}</span>
-                  ))}
-                </div>
-
-                <div className="blog-card__social">
+                <div className="feed-post__actions">
                   <button
                     type="button"
-                    className={likedPosts[post.id] ? "is-liked" : ""}
-                    onClick={() => handleLike(post.id)}
+                    className={social.likedByViewer ? "is-liked" : ""}
+                    disabled={isSubmitting[post.slug]}
+                    onClick={() => handleLike(post)}
                   >
-                    {likedPosts[post.id] ? "Liked" : "Like"}
+                    <Heart size={18} />
+                    <span>{social.likedByViewer ? "Liked" : "Like"}</span>
                   </button>
 
                   <button
@@ -140,42 +256,60 @@ function BlogPage() {
                       )
                     }
                   >
-                    Comment
+                    <MessageCircle size={18} />
+                    <span>Comment</span>
                   </button>
 
                   <button type="button" onClick={() => handleShare(post)}>
-                    Share
+                    <Share2 size={18} />
+                    <span>Share</span>
                   </button>
                 </div>
 
                 {openCommentPost === post.id ? (
-                  <div className="blog-comment-box">
-                    <textarea
-                      placeholder="Write what you want to ask or say..."
-                      rows="4"
-                    />
-                    <button type="button">Submit comment</button>
-                    <small>
-                      Comments are frontend-only for now. We’ll connect this to
-                      Supabase later.
-                    </small>
+                  <div className="feed-post__comments">
+                    <div className="feed-post__comment-input">
+                      <textarea
+                        placeholder="Write a comment..."
+                        rows="3"
+                        value={commentDrafts[post.slug] || ""}
+                        onChange={(event) =>
+                          setCommentDrafts((prev) => ({
+                            ...prev,
+                            [post.slug]: event.target.value,
+                          }))
+                        }
+                      />
+
+                      <button
+                        type="button"
+                        disabled={isSubmitting[`comment-${post.slug}`]}
+                        onClick={() => handleCommentSubmit(post)}
+                      >
+                        <Send size={16} />
+                        <span>Post</span>
+                      </button>
+                    </div>
+
+                    {social.comments.length ? (
+                      <div className="feed-post__comment-list">
+                        {social.comments.map((comment) => (
+                          <div className="feed-post__comment" key={comment.id}>
+                            <strong>{comment.display_name || "Visitor"}</strong>
+                            <p>{comment.comment_text}</p>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="feed-post__empty-comments">
+                        No comments yet. Start the conversation.
+                      </p>
+                    )}
                   </div>
                 ) : null}
-              </div>
-
-              <div className="blog-card__media">
-                {post.imageUrl ? (
-                  <img src={post.imageUrl} alt={post.title} />
-                ) : (
-                  <div className="blog-card__placeholder">
-                    <span>{post.category}</span>
-                    <strong>Image / screenshot soon</strong>
-                    <p>Paste Cloudinary URL later in blog.content.js.</p>
-                  </div>
-                )}
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </section>
       </main>
     </PageShell>
