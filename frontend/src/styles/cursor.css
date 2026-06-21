@@ -1,0 +1,9 @@
+body {
+  cursor: default;
+}
+
+button,
+a,
+[role="button"] {
+  cursor: pointer;
+}

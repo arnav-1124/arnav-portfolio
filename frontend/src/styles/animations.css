@@ -1,0 +1,12 @@
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  animation: revealUp 560ms ease forwards;
+}
+
+@keyframes revealUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
