@@ -84,3 +84,65 @@ export const sendContactMessage = ({ name, email, message }) => {
     }),
   });
 };
+
+const ADMIN_TOKEN_KEY = "arnav_portfolio_admin_token";
+
+export const getAdminToken = () => {
+  return localStorage.getItem(ADMIN_TOKEN_KEY);
+};
+
+export const setAdminToken = (token) => {
+  localStorage.setItem(ADMIN_TOKEN_KEY, token);
+};
+
+export const clearAdminToken = () => {
+  localStorage.removeItem(ADMIN_TOKEN_KEY);
+};
+
+const adminRequest = async (path, options = {}) => {
+  const token = getAdminToken();
+
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    ...options,
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      ...(options.headers || {}),
+    },
+  });
+
+  let payload = null;
+
+  try {
+    payload = await response.json();
+  } catch {
+    payload = null;
+  }
+
+  if (!response.ok) {
+    throw new Error(payload?.message || "Admin request failed");
+  }
+
+  return payload.data;
+};
+
+export const loginAdmin = ({ email, password }) => {
+  return request("/auth/admin-login", {
+    method: "POST",
+    body: JSON.stringify({
+      email,
+      password,
+    }),
+  });
+};
+
+export const getAdminContactMessages = () => {
+  return adminRequest("/admin/contact-messages");
+};
+
+export const updateAdminContactMessageStatus = ({ id, status }) => {
+  return adminRequest(`/admin/contact-messages/${id}/status`, {
+    method: "PATCH",
+    body: JSON.stringify({ status }),
+  });
+};

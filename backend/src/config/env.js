@@ -11,6 +11,8 @@ const requiredEnvVars = [
   "CLOUDINARY_API_KEY",
   "CLOUDINARY_API_SECRET",
   "JWT_SECRET",
+  "ADMIN_EMAIL",
+  "ADMIN_PASSWORD",
 ];
 
 const missingEnvVars = requiredEnvVars.filter((key) => !process.env[key]);
@@ -33,4 +35,7 @@ export const env = {
 
   jwtSecret: process.env.JWT_SECRET,
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "7d",
+
+  adminEmail: process.env.ADMIN_EMAIL,
+  adminPassword: process.env.ADMIN_PASSWORD,
 };

@@ -7,6 +7,12 @@ import BlogPage from "../pages/public/BlogPage.jsx";
 import ResumePage from "../pages/public/ResumePage.jsx";
 import ContactPage from "../pages/public/ContactPage.jsx";
 
+import AdminLayout from "../components/admin/AdminLayout.jsx";
+import ProtectedAdminRoute from "../components/admin/ProtectedAdminRoute.jsx";
+import AdminContactMessagesPage from "../pages/admin/AdminContactMessagesPage.jsx";
+import AdminDashboardPage from "../pages/admin/AdminDashboardPage.jsx";
+import AdminLoginPage from "../pages/admin/AdminLoginPage.jsx";
+
 function AppRouter() {
   return (
     <Routes>
@@ -16,6 +22,17 @@ function AppRouter() {
       <Route path="/blog" element={<BlogPage />} />
       <Route path="/resume" element={<ResumePage />} />
       <Route path="/contact" element={<ContactPage />} />
+      <Route path="/admin/login" element={<AdminLoginPage />} />
+
+      <Route element={<ProtectedAdminRoute />}>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboardPage />} />
+          <Route
+            path="contact-messages"
+            element={<AdminContactMessagesPage />}
+          />
+        </Route>
+      </Route>
     </Routes>
   );
 }

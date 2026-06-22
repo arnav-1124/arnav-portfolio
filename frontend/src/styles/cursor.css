@@ -1,9 +1,62 @@
-body {
-  cursor: default;
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+
+  .custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 18px;
+    height: 18px;
+    pointer-events: none;
+    transform: translate3d(-100px, -100px, 0);
+    transition:
+      width 160ms ease,
+      height 160ms ease,
+      border-color 160ms ease,
+      background 160ms ease;
+  }
+
+  .custom-cursor::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid rgba(245, 239, 227, 0.75);
+    border-radius: 999px;
+    background: rgba(245, 239, 227, 0.08);
+    transform: translate(-50%, -50%);
+  }
+
+  .custom-cursor span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--accent-orange);
+    transform: translate(-50%, -50%);
+  }
+
+  .custom-cursor.is-pointer {
+    width: 28px;
+    height: 28px;
+  }
+
+  .custom-cursor.is-pointer::before {
+    border-color: rgba(245, 158, 66, 0.82);
+    background: rgba(245, 158, 66, 0.1);
+  }
+
+  .custom-cursor.is-pointer span {
+    background: var(--accent-green);
+  }
 }
 
-button,
-a,
-[role="button"] {
-  cursor: pointer;
+@media (hover: none), (pointer: coarse) {
+  .custom-cursor {
+    display: none;
+  }
 }
