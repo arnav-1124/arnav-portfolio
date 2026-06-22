@@ -8,50 +8,103 @@
     top: 0;
     left: 0;
     z-index: 9999;
-    width: 18px;
-    height: 18px;
+    width: 30px;
+    height: 30px;
     pointer-events: none;
     transform: translate3d(-100px, -100px, 0);
-    transition:
-      width 160ms ease,
-      height 160ms ease,
-      border-color 160ms ease,
-      background 160ms ease;
+    will-change: transform;
+    filter: drop-shadow(0 0 8px rgba(125, 229, 255, 0.65))
+      drop-shadow(0 0 3px rgba(255, 255, 255, 0.35));
+    transition: filter 140ms ease;
   }
 
   .custom-cursor::before {
     content: "";
     position: absolute;
-    inset: 0;
-    border: 1px solid rgba(245, 239, 227, 0.75);
-    border-radius: 999px;
-    background: rgba(245, 239, 227, 0.08);
-    transform: translate(-50%, -50%);
+    left: 0;
+    top: 0;
+    width: 25px;
+    height: 25px;
+    background: #9eeaff;
+    clip-path: polygon(
+      7% 0%,
+      88% 50%,
+      52% 58%,
+      40% 96%,
+      24% 90%,
+      36% 55%,
+      7% 0%
+    );
+  }
+
+  .custom-cursor::after {
+    content: "";
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    width: 16px;
+    height: 16px;
+    background: #f8fbff;
+    clip-path: polygon(
+      5% 0%,
+      86% 49%,
+      48% 56%,
+      38% 88%,
+      27% 83%,
+      36% 53%,
+      5% 0%
+    );
+    opacity: 0.9;
   }
 
   .custom-cursor span {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 5px;
-    height: 5px;
+    left: 21px;
+    top: 22px;
+    width: 6px;
+    height: 6px;
     border-radius: 999px;
     background: var(--accent-orange);
-    transform: translate(-50%, -50%);
+    box-shadow:
+      0 0 0 3px rgba(245, 158, 66, 0.18),
+      0 0 14px rgba(245, 158, 66, 0.72);
+    transition:
+      background 160ms ease,
+      box-shadow 160ms ease,
+      transform 160ms ease;
   }
 
   .custom-cursor.is-pointer {
-    width: 28px;
-    height: 28px;
+    filter: drop-shadow(0 0 8px rgba(125, 229, 255, 0.7))
+      drop-shadow(0 0 5px rgba(245, 158, 66, 0.48));
   }
 
   .custom-cursor.is-pointer::before {
-    border-color: rgba(245, 158, 66, 0.82);
-    background: rgba(245, 158, 66, 0.1);
+    background: #7de5ff;
+  }
+
+  .custom-cursor.is-pointer::after {
+    background: #ffffff;
   }
 
   .custom-cursor.is-pointer span {
     background: var(--accent-green);
+    box-shadow:
+      0 0 0 8px rgba(245, 158, 66, 0.16),
+      0 0 18px rgba(143, 214, 148, 0.78);
+    transform: scale(1.15);
+  }
+
+  input,
+  textarea,
+  select {
+    cursor: text !important;
+  }
+
+  input:hover,
+  textarea:hover,
+  select:hover {
+    cursor: text !important;
   }
 }
 

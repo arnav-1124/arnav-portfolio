@@ -1,3 +1,4 @@
+import { ArrowRight, LockKeyhole, Mail } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -40,40 +41,73 @@ function AdminLoginPage() {
   };
 
   return (
-    <main className="admin-login-page">
-      <form className="admin-login-card" onSubmit={handleSubmit}>
-        <span>Admin</span>
-        <h1>Login to portfolio admin</h1>
-        <p>Manage contact messages, blog posts, projects, and proof content.</p>
+    <main className="admin-auth-page">
+      <section className="admin-auth-card">
+        <div className="admin-auth-card__left">
+          <span>Admin access</span>
+          <h1>Sign in to your portfolio control center.</h1>
+          <p>
+            Manage contact messages, proof links, blog notes, projects,
+            certificates, and portfolio content from one private workspace.
+          </p>
 
-        <label>
-          Email
-          <input
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-        </label>
+          <div className="admin-auth-card__mini-grid">
+            <div>
+              <strong>01</strong>
+              <p>Messages</p>
+            </div>
+            <div>
+              <strong>02</strong>
+              <p>Content</p>
+            </div>
+            <div>
+              <strong>03</strong>
+              <p>Proof</p>
+            </div>
+          </div>
+        </div>
 
-        <label>
-          Password
-          <input
-            name="password"
-            type="password"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-        </label>
+        <form className="admin-auth-form" onSubmit={handleSubmit}>
+          <span>Welcome back</span>
 
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Logging in..." : "Login"}
-        </button>
+          <label>
+            Email address
+            <div className="admin-auth-input">
+              <Mail size={17} />
+              <input
+                name="email"
+                type="email"
+                placeholder="you@example.com"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </label>
 
-        {status ? <p className="admin-form-error">{status}</p> : null}
-      </form>
+          <label>
+            Password
+            <div className="admin-auth-input">
+              <LockKeyhole size={17} />
+              <input
+                name="password"
+                type="password"
+                placeholder="Your password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </label>
+
+          <button type="submit" disabled={isSubmitting}>
+            <span>{isSubmitting ? "Signing in..." : "Sign in"}</span>
+            <ArrowRight size={17} />
+          </button>
+
+          {status ? <p className="admin-form-error">{status}</p> : null}
+        </form>
+      </section>
     </main>
   );
 }

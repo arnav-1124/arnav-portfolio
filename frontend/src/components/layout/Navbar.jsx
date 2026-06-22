@@ -35,6 +35,9 @@ function Navbar() {
               {link.label}
             </NavLink>
           ))}
+          <NavLink to="/admin/login" className="nav-admin-link">
+            Admin
+          </NavLink>
         </div>
 
         <button
@@ -63,6 +66,14 @@ function Navbar() {
               {link.label}
             </NavLink>
           ))}
+
+          <NavLink
+            to="/admin/login"
+            onClick={closeMenu}
+            className="mobile-menu__link"
+          >
+            Admin
+          </NavLink>
         </div>
       </div>
     </header>
